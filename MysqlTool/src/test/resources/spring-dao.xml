@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+">
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="jdbc:mysql://${db.ip}:${db.port}/${db.database}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="${db.user}" />
+		<property name="password" value="${db.password}" />
+		<property name="filters" value="${druid.filters}" />
+		<property name="maxActive" value="${druid.maxActive}" />
+		<property name="initialSize" value="${druid.initialSize}" />
+		<property name="maxWait" value="${druid.maxWait}" />
+		<property name="minIdle" value="${druid.minIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${druid.validationQuery}" />
+		<property name="testWhileIdle" value="${druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.testOnReturn}" />
+		<property name="connectionErrorRetryAttempts" value="${druid.connectionErrorRetryAttempts}" />
+		<property name="breakAfterAcquireFailure" value="${druid.breakAfterAcquireFailure}" />
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+	</bean>
+	
+	<!-- 连接管理对象 -->
+	<bean id="connection-provider"
+		class=" com.Jonas.mysql.provider.DruidConnectionProvider">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!--通用DAO -->
+	<bean id="JdbcUtilMysql" class="com.Jonas.mysql.provider.JdbcUtilMysql">
+		<property name="connectionProvider" ref="connection-provider" />
+	</bean>
+	
+	
+</beans>
